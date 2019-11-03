@@ -1,24 +1,30 @@
-interface Animal{
-  void shout();
-}
-class Cat implements Animal{
-   public void shout(){
-       System.out.println("喵喵……");
+class Ticket1 implements Runnable{
+   private int tickets=10;
+   public void run(){
+       while(true){
+          saleTicket();
+          if (tickets<=0){
+             break;
+          }
+       }
    }
-}
-class Dog implements Animal{
-   public void shout(){
-       System.out.println("汪汪……");
+   private synchronized void saleTicket(){
+       if(tickets>0){
+          try(tickets>0){
+            Thread.sleep(10);
+          }catch(InterruptedException e){
+             e.printStackTrance();
+          }
+          System.out.println(Thread.currentThread().getName()+"---卖出的票"+tickets--);
+       }
    }
 }
 public class Example13{
-    public static void main(String[] args){
-        Animal an1 = new Cat();
-        Animal an2 = new Dog();
-        animalShout(an1);
-        animalShout(an2);
-    }
-    public static void animalShout(Animal an){
-        an.shout();
-    }
+   public static void main(String[] args){
+       Ticket1 ticket=new Ticket1();
+       new Thread(ticket,"线程一").start();
+       new Thread(ticket,"线程二").start();
+       new Thread(ticket,"线程三").start();
+       new Thread(ticket,"线程四").start();
+   }
 }
